@@ -1,0 +1,11 @@
+<ion-list class="bk-none" [id]="list_name + '-list'">
+  <ion-item class="bk-none br-bottom" *ngFor="let pokemon of pokemons; let i = index" [class.focused]="i === focused_index[list_name]" (click)="selectPokemon(pokemon)">
+    <ion-avatar slot="start">
+      <img [src]="pokemon.image" alt="{{ pokemon.name }}">
+    </ion-avatar>
+    <p class="toupper">N.#{{ pokemon.id }}  {{ pokemon.name }}</p>
+    <ion-button class="-zero" slot="end" (click)="toggleFavorite(pokemon);$event.stopPropagation()">
+    <ion-icon class="-cpink" size="large" [name]="isFavorite(pokemon) ? 'heart' : 'heart-outline'"></ion-icon>
+    </ion-button>
+  </ion-item>
+</ion-list>

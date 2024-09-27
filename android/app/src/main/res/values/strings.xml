@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PokedexApp</string>
+    <string name="title_activity_main">PokedexApp</string>
+    <string name="package_name">hologramn.com</string>
+    <string name="custom_url_scheme">hologramn.com</string>
+</resources>

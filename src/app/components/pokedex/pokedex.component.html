@@ -1,0 +1,159 @@
+<div class="flex-height-oh-alic-jcc main">
+  <div class="flex-column-height-bkpink-b4b-br20-oh-mauto pokedex">
+    <div class="flex-jcstart">
+      <div class="lightsleft">
+        <span class="-bkwhite-light-big"></span>
+      </div>
+      <div class="lightsright">
+        <div class="box-up">
+          <span class="-bkred-light-middle"></span>
+          <span class="-bkyellow-light-middle"></span>
+          <span class="-bkgreen-light-middle"></span>
+        </div>
+        <div class="box-down">
+        </div>
+      </div>
+    </div>
+   <!--PANEL PANTALLA-->
+    <div class="screen-panel">
+      <ion-searchbar class="search-bar" placeholder="Name | ID" [(ngModel)]="search_term" (ionInput)="searchPokemon()"></ion-searchbar>
+      <div class="panel-top">
+        <span class="-bkred-light-mini"></span>
+        <span class="-bkred-light-mini"></span>
+      </div>
+    <!--PANTALLA INTERNA-->
+    <div class="screen flex-column-alic-jcc">
+      <ion-spinner *ngIf="loading" name="crescent"></ion-spinner>
+        <!--VISTA DEL POKEMON SELECCIONADO-->
+        <ion-card class="bk-none -zero selected-pokemon" *ngIf="selected_pokemon && getView()==='selected_pokemon'">
+          <h2>
+            <span>{{ selected_pokemon.name }}</span>
+            <span>N.#{{ selected_pokemon.id }}</span>
+          </h2>
+          <img *ngIf="selected_pokemon.image" [src]="selected_pokemon.image" alt="{{ selected_pokemon.name }}">
+          <h3 class="-txtc">Attributes</h3>
+          <ul class="inline-block">
+            <li>
+              <p class="flex-jcbtween">Height: <b class="-txtr">{{ selected_pokemon.height/10 }}</b></p>
+            </li>
+            <li>
+              <p class="flex-jcbtween">Weight: <b class="-txtr">{{ selected_pokemon.weight/10 }}</b></p>
+            </li>
+            <li>
+              <p class="flex-jcbtween">Types: <b class="-txtr">{{ pokemon_types }}</b></p>
+            </li>
+            <li *ngFor="let stat of selected_pokemon.stats">
+              <p class="flex-jcbtween">{{ stat.stat.name }}: <b class="-txtr">{{ stat.base_stat }}</b></p>
+            </li>
+          </ul>
+          <h3 class="-txtc">Skills</h3>
+          <ul class="inline-block">
+            <li *ngFor="let skill of selected_pokemon.abilities">
+              <p class="flex-jcbtween">Skill: <b class="-txtr">{{ skill.ability.name }}</b></p>
+            </li>
+          </ul>
+          <h3 class="-txtc">Moves</h3>
+          <ul class="inline-block">
+            <li *ngFor="let move of selected_pokemon.moves">
+              <p class="flex-jcbtween">Move: <b class="-txtr">{{ move.move.name }}</b></p>
+            </li>
+          </ul>
+          <p class="flex-jcc-alic">
+            <ion-button class="-b2b-bxs-bkwhite-cpink-zero" (click)="toggleFavorite(selected_pokemon);">
+              {{ isFavorite(selected_pokemon) ? 'Remove from favorites' : 'Add to favorites' }} &nbsp;
+              <ion-icon size="large" [name]="isFavorite(selected_pokemon) ? 'heart' : 'heart-outline'"></ion-icon>
+            </ion-button>
+          </p>
+      </ion-card>
+      <!--FIN VISTA DEL POKEMON SELECCIONADO-->
+      <!--LISTA DE FAVORITOS-->
+      <ion-content class="bk-none pokemons-list" *ngIf="getView()==='favorites'">
+        <h3 class="-txtc-sticky-top">Favorites list ({{favorites.length}})</h3>
+        <p class="-txtc" *ngIf="favorites.length === 0">You don't have any favorite Pokemon</p>
+        <app-pokemon-list [list_name]="'favorites'" [pokemons]="favorites" [focused_index]="focused_index" [selectPokemon]="selectPokemon.bind(this)" [toggleFavorite]="toggleFavorite.bind(this)" [isFavorite]="isFavorite.bind(this)"></app-pokemon-list>
+      </ion-content>
+      <!--FIN LISTA DE FAVORITOS-->
+      <!--LISTADO DE TODOS LOS POKEMONS-->
+      <ion-content class="bk-none pokemons-list" *ngIf="!loading && getView()==='pokemons'">
+        <h3 class="-txtc-sticky-top">Pokemons {{ selected_type ? 'Type:'+selected_type : 'list' }} ({{pokemons_filtered.length===0 ? pokemons.length : pokemons_filtered.length}})</h3>
+        <app-pokemon-list [list_name]="'pokemons'" [pokemons]="displayed_pokemons" [focused_index]="focused_index" [selectPokemon]="selectPokemon.bind(this)" [toggleFavorite]="toggleFavorite.bind(this)" [isFavorite]="isFavorite.bind(this)"></app-pokemon-list>
+        <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+      </ion-content>
+      <!--FIN LISTADO DE TODOS LOS POKEMONS-->
+    </div>
+    <!--FIN PANTALLA INTERNA-->
+    <div class="light-speaker">
+      <span class="-bkred-light-middle"></span>
+      <span class="speaker"></span>
+    </div>
+  </div>
+  <!--FIN PANEL PANTALLA-->
+  <!--BOTONERA POKEDEX-->
+  <div class="keyboard-panel flex-row-">
+    <div class="left-panel grid-alic-jcstart">
+      <ion-button id="btn-favorites" class="circle-b2b-bxs-bkgrey-zero-big" (click)="viewFavorites()">
+        <ion-icon class="-cblack" size="large" [name]="getView()==='favorites' ? 'heart' : 'heart-outline'"></ion-icon>
+      </ion-button>
+      <!--<span>Favorites</span>-->
+    </div>
+    <div class="mid-panel grid-flex">
+      <div class="flex-alic-jcc">
+        <div class="flex-column-alic-jcc">
+          <ion-button id="btn-reset" class="-b2b-bxs-bkred-zero" (click)="resetScreen()">
+            <ion-icon class="-cblack" size="med" [name]="'reset'"></ion-icon>
+          </ion-button>
+          <!--<span>Reset</span>-->
+        </div>
+        <div class="flex-column-alic-jcc">
+          <ion-button id="btn-enter" class="-b2b-bxs-bkblue-zero" (click)="selectItem()">
+            <ion-icon class="-cblack" size="med" [name]="'enter'"></ion-icon>
+          </ion-button>
+          <!--<span>Enter</span>-->
+        </div>
+      </div>
+      <div class="flex-column-alic-jcc">
+        <ion-button id="open-modal-types" expand="block" class="-b2b-bkgreen2-zero">
+          <ion-icon class="-cblack" size="med" [name]="selected_type ? 'filter' : 'filter-outline'"></ion-icon>
+        </ion-button>
+        <!--<span>Fiters</span>-->
+        <!--MODAL CON LOS TIPOS DE POKEMONS-->
+        <ion-modal #modal trigger="open-modal-types" class="modal-types" [presentingElement]="presenting_element">
+          <ng-template>
+            <ion-header class="-bkgreen3">
+              <ion-toolbar class="bk-none -cwhite">
+                <ion-title>Types of Pokemon</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button class="-cwhite" (click)="modal.dismiss()">Close</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="bk-none">
+                <div class="grid-height-oa-cwhite">
+                  <ul class="inline-block -bkpink">
+                    <li class="pokemon-type grid-alic-jcc-b2b-bkblue2" button="true" detail="false" *ngFor="let type of types" (click)="toggleTypeSelection(type.name); modal.dismiss()">
+                      <ion-checkbox slot="end" class="check-type" [checked]="selected_type === type.name"></ion-checkbox>
+                      <span class="isChecked"></span>
+                      <img [src]="'assets/icon/' + type.name + '.svg'" alt="{{ type.name }}">
+                      <p class="-flex">{{ type.name }}</p>
+                    </li>
+                  </ul>
+                </div>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+        <!--FIN MODAL CON LOS TIPOS DE POKEMONS-->
+      </div>
+    </div>
+    <div class="right-panel">
+      <ul class="crosshead grid-zero">
+        <li></li><li class="btn-up -bkgrey-bxs" (click)="moveFocus('up')"></li><li></li>
+        <li class="btn-left -bkgrey-bxs"></li><li class="btn-center -bkgrey-bxs"></li><li class="btn-right -bkgrey-bxs"></li>
+        <li></li><li class="btn-down -bkgrey-bxs" (click)="moveFocus('down')"></li><li></li>
+      </ul>
+    </div>
+  </div>
+  <!--BOTONERA POKEDEX-->
+  </div>
+</div>

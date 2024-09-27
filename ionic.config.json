@@ -1,0 +1,7 @@
+{
+  "name": "pokedex2.0",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
