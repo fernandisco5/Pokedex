@@ -132,7 +132,7 @@ export class PokedexComponent implements OnInit {
   }
   //Filtras los pokemons por tipo
   filterPokemons() {
-    this.pokemons_filtered = []; // Inicializar el array
+    this.pokemons_filtered = [];
     this.limit=20;
     this.offset=0;
     //const pokemons = this.pokemons_searched.length===0 ? this.pokemons : this.pokemons_searched;
