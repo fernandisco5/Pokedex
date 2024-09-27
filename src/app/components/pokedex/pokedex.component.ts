@@ -119,6 +119,7 @@ export class PokedexComponent implements OnInit {
         this.selectPokemon(this.pokemons_searched[0]);
     }else{
       this.selected_pokemon=null;
+      this.setView('pokemons');
     }
   }
   //Funcion que se aplica a los chechbox para filtrar
@@ -273,21 +274,5 @@ export class PokedexComponent implements OnInit {
       }
     }
     return '';
-  }
-  async loadSVG(url: string) {
-    return fetch(url)
-      .then(response => response.text())
-      .then(svg_content => {
-        return svg_content;
-      })
-      .catch(error => {
-        console.error('Error loading SVG:', error);
-        return '';
-      });
-  }
-  loadSVGAsText(svg_content: Promise<string>){
-    svg_content.then(svg=>{
-      return svg;
-    });
   }
 }
