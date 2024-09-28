@@ -368,14 +368,13 @@ div,span{
 }
 .pokemon-list{
 padding: 0;
-}.pokemon-list > ion-item{
+}
+.pokemon-list > ion-item{
   cursor: pointer;
 }
 .focused,
+.pokemon-list > ion-item:focus,
 .pokemon-list > ion-item:hover{
-  background-color: rgba(255,255,255,0.2);
-}
-.pokemon-list > ion-item:focus{
   background-color: rgba(255,255,255,0.2);
 }
 .selected-pokemon{
