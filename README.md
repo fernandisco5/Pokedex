@@ -1,5 +1,5 @@
 # Pokedex
-This project was generated with Angular CLI version 18.0.0 and Ionci CLI version 8.0.0
+This project was generated with Angular CLI version 18.0.0 and Ionic CLI version 8.0.0
 ## Install angular 
 npm install -g @angular/cli
 ## Install Ionic
