@@ -5,6 +5,4 @@ npm install -g @angular/cli
 ## Install Ionic
 npm install -g @ionic/cli
 ## Run server
-ionic serve - for a dev server. Navigate to http://localhost:8100/
-or
-ng serve - for a dev server. Navigate to http://localhost:4200/
+ionic serve - for a dev server. Navigate to http://localhost:8100/ or ng serve - for a dev server. Navigate to http://localhost:4200/
